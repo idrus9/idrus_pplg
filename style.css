@@ -1,0 +1,60 @@
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --bg: #f0f3f7;
+            --sidebar-grad: linear-gradient(180deg, #6c5ce7 0%, #a29bfe 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { display: flex; background: var(--bg); min-height: 100vh; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px; background: var(--sidebar-grad); color: white;
+            padding: 30px 20px; position: fixed; height: 100%; display: flex; flex-direction: column;
+        }
+        .sidebar h2 { text-align: center; margin-bottom: 40px; letter-spacing: 1px; }
+        .sidebar a {
+            color: rgba(255,255,255,0.8); text-decoration: none; padding: 15px;
+            margin: 5px 0; border-radius: 10px; display: flex; align-items: center; transition: 0.3s;
+        }
+        .sidebar a:hover, .sidebar a.active { background: rgba(255,255,255,0.2); color: white; }
+        .sidebar a i { margin-right: 15px; width: 20px; }
+
+        /* MAIN CONTENT STYLE */
+        .main-content { margin-left: 260px; flex: 1; padding: 40px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .user-info img { width: 40px; border-radius: 50%; border: 2px solid var(--primary); }
+
+        /* CARDS STYLE */
+        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .card {
+            padding: 25px;
+            border-radius: 20px;
+            color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card-1 { background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); }
+        .card-2 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+        .card-3 { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
+        
+        .card h3 { font-size: 14px; opacity: 0.8; text-transform: uppercase; }
+        .card h1 { font-size: 28px; margin-top: 10px; }
+
+        /* TABLE STYLE */
+        .recent-sales {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .recent-sales h2 { margin-bottom: 20px; color: #2d3436; font-size: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; color: #b2bec3; font-weight: 500; border-bottom: 2px solid #f0f3f7; }
+        td { padding: 15px; border-bottom: 1px solid #f0f3f7; color: #636e72; }
+        .status { padding: 5px 12px; border-radius: 20px; font-size: 12px; background: #e3fcef; color: #00b894; }

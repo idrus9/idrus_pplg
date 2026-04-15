@@ -1,33 +1,21 @@
 <?php
-// Sertakan koneksi database
-include 'koneksi.php';
-
-// Memulai session
+include 'config.php';
 session_start();
 
-// Jika tombol login ditekan
-if (isset($_POST['login'])) {
-    // Ambil data dari form dan amankan dari SQL Injection
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $password = md5($_POST['password']); // Tetap menggunakan MD5 sesuai permintaan
+$error = "";
 
-    // Query untuk cek user
-    $query  = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+if (isset($_POST['login'])) {
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $password = md5($_POST['password']); // Menggunakan MD5 sesuai permintaan
+
+    $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
     $result = mysqli_query($conn, $query);
 
-    // Cek apakah data ditemukan
-    if ($result && mysqli_num_rows($result) > 0) {
-        $data = mysqli_fetch_assoc($result);
-        
-        // Set session
-        $_SESSION['user'] = $data['username'];
-        $_SESSION['status'] = "login";
-
-        // Alihkan ke dashboard
+    if (mysqli_num_rows($result) === 1) {
+        $_SESSION['username'] = $username;
         header("Location: dashboard.php");
-        exit(); // Pastikan script berhenti setelah redirect
     } else {
-        $error = "Username atau Password salah!";
+        $error = "Username atau password salah!";
     }
 }
 ?>
@@ -37,76 +25,71 @@ if (isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin - Cafe Cianjur</title>
+    <title>Modern Login Page</title>
     <style>
-        * { box-sizing: border-box; }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1501339819398-ed4fc1ad5ad7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .login-box { 
-            background: rgba(255, 255, 255, 0.95); 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0px 10px 25px rgba(0,0,0,0.3); 
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 350px;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+        }
+        h2 { text-align: center; margin-bottom: 20px; letter-spacing: 2px; }
+        .input-group { margin-bottom: 20px; }
+        input {
             width: 100%;
-            max-width: 350px;
-            text-align: center;
-        }
-        h2 { color: #5D4037; margin-bottom: 20px; }
-        input { 
-            display: block; 
-            width: 100%; 
-            margin-bottom: 15px; 
-            padding: 12px; 
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            color: white;
             outline: none;
         }
-        input:focus { border-color: #6F4E37; }
-        button { 
-            width: 100%; 
-            padding: 12px; 
-            background: #6F4E37; 
-            color: white; 
-            border: none; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-size: 16px;
+        input::placeholder { color: #ddd; }
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #fff;
+            color: #764ba2;
             font-weight: bold;
+            cursor: pointer;
             transition: 0.3s;
         }
-        button:hover { background: #5D4037; }
-        .error-msg {
-            background: #ffebee;
-            color: #c62828;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
+        button:hover { background: #f0f0f0; transform: scale(1.02); }
+        .error { color: #ff8080; font-size: 14px; text-align: center; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <div class="login-box">
-        <h2>Coffee Admin</h2>
-        
-        <?php if(isset($error)): ?>
-            <div class="error-msg"><?php echo $error; ?></div>
-        <?php endif; ?>
 
-        <form method="POST" action="">
+<div class="login-container">
+    <h2>LOGIN</h2>
+    <?php if($error): ?>
+        <p class="error"><?php echo $error; ?></p>
+    <?php endif; ?>
+    
+    <form action="" method="POST">
+        <div class="input-group">
             <input type="text" name="username" placeholder="Username" required>
+        </div>
+        <div class="input-group">
             <input type="password" name="password" placeholder="Password" required>
-            <button type="submit" name="login">MASUK</button>
-        </form>
-        <p style="font-size: 12px; color: #777; margin-top: 20px;">© 2026 Rekomendasi Cafe Cianjur</p>
-    </div>
+        </div>
+        <button type="submit" name="login">Masuk</button>
+    </form>
+</div>
+
 </body>
 </html>
